@@ -21,6 +21,12 @@ var currentDistance_an = 0;
 
 var Distances_sr = [];
 var Distances_an = [];
+
+
+const p_distance_sr = document.getElementById("distance_sr");
+const p_angle_sr = document.getElementById("angle_sr");
+const p_distance_an = document.getElementById("distance_an");
+const p_angle_an = document.getElementById("angle_an");
 // Listen for changes in the Firebase Realtime Database.
 // Assumes data is stored under the "radarData" node with properties "degree" and "distance".
 var radarRef = database.ref('radarData');
@@ -34,6 +40,10 @@ if (data) {
   Distances_an[currentDegree] =  data.distance_an;
   Distances_sr[currentDegree] = data.distance_sr;
   
+  p_distance_sr.textContent = "Distance: " + data.distance_sr;
+  p_angle_sr.textContent = "Angle: " + data.degree;
+  p_distance_an.textContent = "Distance: " +  data.distance_an;
+  p_angle_an.textContent = "Angle: " + (data.degree + 180);
 }
 });
 
