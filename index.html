@@ -7,7 +7,8 @@
   <link rel = "stylesheet" href="/Radar/css/index.css">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Radar Animation with Firebase</title>
+  <title>Radar</title>
+  <link rel="icon" type="image" href="/Radar/pics/radar_pic.png">
 
 </head>
 <body>
@@ -25,6 +26,27 @@
   <h1>Radar</h1>
   <canvas id="radarCanvas" width="500" height="500"></canvas>
   
+  <br>
+
+  
+  <div class="container min-vh-100 justify-content-center align-items-center" id="in">
+    <div class="row my-100 g-5 min-vh-100 justify-content-center align-item-center">
+        <div class="col-lg-6 col-md-6 col-sm-12 mb-4">
+            <div class="container">
+                <h2>Distance from Ultrasonic sensor</h2>
+                <p style=" margin-right: 100px;">Distance: </p>
+                <p>Angle: </p>
+            </div>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-12 mb-4">
+            <div class="container">
+                <h2>Distance from Infra Red sensor</h2>
+                <p style=" margin-right: 100px;">Distance: </p>
+                <p>Angle: </p>
+            </div>
+        </div>
+    </div>
+</div>
   <!-- Include Firebase v8 libraries -->
   <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-auth-compat.js"></script>
