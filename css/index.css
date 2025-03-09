@@ -2,16 +2,16 @@ body {
     background-color: #000;
   }
 h1{
-    color: #fff;
+    color: white;
     text-align: center;
     font-family: Arial, sans-serif;
 }
 h2{
-    color: #fff;
+    color: white;
     
 }
 p{
-    color: #fff;
+    color: white;
     display: inline;    
 }
 nav{
