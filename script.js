@@ -40,9 +40,9 @@ if (data) {
   Distances_an[currentDegree] =  data.distance_an;
   Distances_sr[currentDegree] = data.distance_sr;
   
-  p_distance_sr.textContent = "Distance: " + data.distance_sr;
+  p_distance_sr.textContent = "Distance: " + data.distance_sr + " cm";
   p_angle_sr.textContent = "Angle: " + data.degree;
-  p_distance_an.textContent = "Distance: " +  data.distance_an;
+  p_distance_an.textContent = "Distance: " +  data.distance_an + " cm";
   p_angle_an.textContent = "Angle: " + (data.degree + 180);
 }
 });
