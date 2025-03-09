@@ -6,6 +6,14 @@ h1{
     text-align: center;
     font-family: Arial, sans-serif;
 }
+h2{
+    color: #fff;
+    
+}
+p{
+    color: #fff;
+    display: inline;    
+}
 nav{
     background-color: #111;
 }
@@ -13,5 +21,11 @@ nav{
     background-color: #111;
     border: 1px solid #333;
     margin: 20px auto;
-    display: block;
+    display: block; 
+}
+@media (max-width: 767px) {
+    #radarCanvas {
+      width: 90%;
+      height: auto; /* Maintain aspect ratio */
+    }
 }
