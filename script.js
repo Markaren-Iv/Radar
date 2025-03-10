@@ -35,6 +35,7 @@ if (data) {
   currentDegree = -1* data.degree;
   currentDistance_sr = data.distance_sr < 40 ?  data.distance_sr : 40;
   currentDistance_an =  data.distance_an;
+  console.log(currentDistance_sr);
 
   Distances_an[currentDegree] =  currentDistance_an;
   Distances_sr[currentDegree] = currentDistance_sr;
@@ -148,7 +149,6 @@ for(var i = 0; i > -180; i--){
 else{
   Distances_sr = new Array(180).fill(0);
   Distances_an = new Array(180).fill(0);
-  console.log("Arrays reset", Distances_sr, Distances_an);
 }
 
 //draws a point sr
