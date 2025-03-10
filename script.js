@@ -16,8 +16,9 @@ var database = firebase.database();
 
 var currentDegree = 0;
 var currentDistance_sr = 0; 
-var currentDistance_an = 0; 
+var currentDistance_an = 0;
 
+// arrays for dots on graph
 var Distances_sr = [];
 var Distances_an = [];
 
@@ -27,19 +28,19 @@ const p_angle_sr = document.getElementById("angle_sr");
 const p_distance_an = document.getElementById("distance_an");
 const p_angle_an = document.getElementById("angle_an");
 // Listen for changes in the Firebase Realtime Database.
-// Assumes data is stored under the "radarData" node with properties "degree" and "distance".
 var radarRef = database.ref('radarData');
 radarRef.on('value', function(snapshot) {
 var data = snapshot.val();
 if (data) {
-  currentDegree = -1* data.degree;
-  currentDistance_sr = data.distance_sr < 40 ?  data.distance_sr : 40;
+  
+  currentDegree = -1* data.degree; // inversion for being alighn with real servo
+  currentDistance_sr = data.distance_sr < 40 ?  data.distance_sr : 40; // limiting to the radius of radar
   currentDistance_an =  data.distance_an;
-  console.log(currentDistance_sr);
 
   Distances_an[currentDegree] =  currentDistance_an;
   Distances_sr[currentDegree] = currentDistance_sr;
   
+  //updates info on page
   p_distance_sr.textContent = "Distance: " + data.distance_sr + " cm";
   p_angle_sr.textContent = "Angle: " + data.degree;
   p_distance_an.textContent = "Distance: " +  data.distance_an + " cm";
@@ -84,12 +85,13 @@ ctx.moveTo(centerX, centerY - maxRadius);
 ctx.lineTo(centerX, centerY + maxRadius);
 ctx.stroke();
 
-// Convert degree to radian (adjust so 0° is up).
-var radian = (currentDegree) * Math.PI / 180;
+// Convert degree to radian 
+var radian = currentDegree * Math.PI / 180;
 
-// Here we normalize currentDistance to the radar scale.
+// normalize currentDistance to the radar scale
 var normalizedDistance_sr = (maxRadius / maxDistance)*currentDistance_sr;
 var normalizedDistance_an = (maxRadius / maxDistance)*currentDistance_an;
+
 // ultrasound point
 normalizedDistance_sr = Math.min(normalizedDistance_sr, maxRadius);
 var pointX_sr = centerX + normalizedDistance_sr * Math.cos(radian);
@@ -99,17 +101,14 @@ var pointY_sr = centerY + normalizedDistance_sr * Math.sin(radian);
 normalizedDistance_sr = Math.min(normalizedDistance_sr, maxRadius);
 var pointX_an = centerX + normalizedDistance_an * Math.cos(radian + Math.PI);
 var pointY_an = centerY + normalizedDistance_an * Math.sin(radian + Math.PI);
-
-// var xEnd_sr = centerX + maxRadius * Math.cos(radian);
-// var yEnd_sr = centerY + maxRadius * Math.sin(radian);
-// var xEnd_an = centerX + maxRadius * Math.cos(radian + Math.PI);
-// var yEnd_an = centerY + maxRadius * Math.sin(radian + Math.PI);
+//line of ultasonic
 ctx.strokeStyle = '#00FF00';
 ctx.lineWidth = 3;
 ctx.beginPath();
 ctx.moveTo(centerX, centerY);
 ctx.lineTo(pointX_sr, pointY_sr);
 ctx.stroke();
+//line of gp2y
 ctx.strokeStyle = '#0000FF';
 ctx.lineWidth = 3;
 ctx.beginPath();
@@ -147,6 +146,7 @@ for(var i = 0; i > -180; i--){
 }
 }
 else{
+  //emptying arrays to erase the dots
   Distances_sr = new Array(180).fill(0);
   Distances_an = new Array(180).fill(0);
 }
@@ -168,6 +168,7 @@ ctx.fill();
 // Animation loop using requestAnimationFrame
 function animate() {
 drawRadar();
-requestAnimationFrame(animate);
+requestAnimationFrame(animate); // animates when possible
 }
+
 animate();
