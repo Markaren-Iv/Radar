@@ -12,8 +12,7 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 var database = firebase.database();
 
-const servo_step = 4;
-const dots = 180 / servo_step;
+
 
 var currentDegree = 0;
 var currentDistance_sr = 0; 
@@ -35,10 +34,10 @@ var data = snapshot.val();
 if (data) {
   currentDegree = -1* data.degree;
   currentDistance_sr = data.distance_sr < 40 ?  data.distance_sr : 40;
-  currentDistance_an =  data.distance_an || currentDistance_an;
+  currentDistance_an =  data.distance_an;
 
-  Distances_an[currentDegree] =  data.distance_an;
-  Distances_sr[currentDegree] = data.distance_sr;
+  Distances_an[currentDegree] =  currentDistance_an;
+  Distances_sr[currentDegree] = currentDistance_sr;
   
   p_distance_sr.textContent = "Distance: " + data.distance_sr + " cm";
   p_angle_sr.textContent = "Angle: " + data.degree;
