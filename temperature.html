@@ -8,35 +8,40 @@
     <title>Temperature</title>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark d-flex justify-content-start">
-        <a class="navbar-brand" href="/Radar/index.html">The Radar</a>
-          <ul class="navbar-nav mr-auto ">
-            <li class="nav-item">
-              <a class="nav-link" href="/Radar/temperature.html">Temperature</a>
-            </li>
-          </ul>
-        </div>
-      </nav>
-      </nav>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark d-flex justify-content-start">
+      <a class="navbar-brand" href="/Radar/index.html">The Radar</a>
+        <ul class="navbar-nav mr-auto ">
+          <li class="nav-item">
+            <a class="nav-link" href="/Radar/temperature.html">Temperature</a>
+          </li>
+        </ul>
+  </nav>  
     
       
       <br>
 
-      <div class="container min-vh-100 justify-content-center align-items-center" id="in">
-        <div class="row my-100 g-5 min-vh-100 justify-content-center align-item-center">
-            <div class="col-lg-6 col-md-6 col-sm-12 mb-4">
-                <div class="container">
-                    <h1>Temperature</h1>
-                    <p>Lorem, ipsum dolor sit amet consectetur adipisicing.</p>
-                </div>
-            </div>
-            <div class="col-lg-6 col-md-6 col-sm-12 mb-4">
-                <div class="container">
-                    <h1>Humidity</h1>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing.</p>
-                </div>
-            </div>
-        </div>
+    <div class="container d-flex min-vh-100 justify-content-center align-items-center">
+      <div class="row d-flex g-5 justify-content-center align-item-center" >
+          <div class="col-lg-6 col-md-6 col-sm-12 mb-4 mb-sm-5 mb-md-0">
+              <div class="container">
+                  <h1>Temperature</h1>
+                  <p id = "temp"></p>
+              </div>
+          </div>
+          <div class="col-lg-6 col-md-6 col-sm-12 mb-4 ">
+              <div class="container">
+                  <h1>Humidity</h1>
+                  <p id = "hum"></p>
+              </div>
+          </div>
+      </div>
     </div>
+    
+  <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-database-compat.js"></script>
+
+  <script type="module" src="/Radar/temphum.js"></script>
+
 </body>
 </html>

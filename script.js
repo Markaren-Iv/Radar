@@ -1,3 +1,4 @@
+//info of Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyDxwejbnr5dIh_ZsVCt4vKynWrdoEVK_nY",
   authDomain: "radar-e87b0.firebaseapp.com",
@@ -42,9 +43,9 @@ if (data) {
   
   //updates info on page
   p_distance_sr.textContent = "Distance: " + data.distance_sr + " cm";
-  p_angle_sr.textContent = "Angle: " + data.degree;
+  p_angle_sr.textContent = "Angle: " + data.degree + "°";
   p_distance_an.textContent = "Distance: " +  data.distance_an + " cm";
-  p_angle_an.textContent = "Angle: " + (data.degree + 180);
+  p_angle_an.textContent = "Angle: " + (data.degree + 180) + "°";
 }
 });
 
