@@ -15,7 +15,7 @@ const firebaseConfig = {
   
 const p_temperature = document.getElementById("temp");
 const p_humidity = document.getElementById("hum");
-
+//listener for changes on TempHum node
 var TempHumRef = database.ref('TempHum');
 TempHumRef.on('value', function(snapshot) {
 var data = snapshot.val();

@@ -6,9 +6,13 @@
     <link rel = "stylesheet" href="/Radar/css/temperature.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Temperature</title>
+    <link rel="icon" type="image" href="/Radar/pics/radar_pic.png">
+
 </head>
 <body>
+     <!-- Navigation bar -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark d-flex justify-content-start">
+    <img src="/Radar/pics/radar_pic.png"  alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
       <a class="navbar-brand" href="/Radar/index.html">The Radar</a>
         <ul class="navbar-nav mr-auto ">
           <li class="nav-item">
@@ -19,7 +23,7 @@
     
       
       <br>
-
+  <!--Container with Temperature and Humidity-->
     <div class="container d-flex min-vh-100 justify-content-center align-items-center">
       <div class="row d-flex g-5 justify-content-center align-item-center" >
           <div class="col-lg-6 col-md-6 col-sm-12 mb-4 mb-sm-5 mb-md-0">
@@ -36,7 +40,7 @@
           </div>
       </div>
     </div>
-    
+      <!--  Firebase libraries -->
   <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-database-compat.js"></script>
