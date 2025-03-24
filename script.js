@@ -35,8 +35,8 @@ var data = snapshot.val();
 if (data) {
   
   currentDegree = -1* data.degree; // inversion for being alighn with real servo
-  currentDistance_sr = data.distance_sr < 40 ?  data.distance_sr : 40; // limiting to the radius of radar
-  currentDistance_an =  data.distance_an;
+  currentDistance_sr = data.distance_sr < 35 ?  data.distance_sr : 35; // limiting to the radius of radar
+  currentDistance_an =  data.distance_an < 35 ?  data.distance_an : 35;
 
   Distances_an[currentDegree] =  currentDistance_an;
   Distances_sr[currentDegree] = currentDistance_sr;
@@ -73,8 +73,10 @@ for (var i = 1; i <= 4; i++) {
   ctx.fillStyle = "white";          
   ctx.textAlign = "center";          
   ctx.textBaseline = "middle";       
-
+  if(i<4){
   var num = String((maxDistance / 4) * i);
+  }else
+  var num = 35;
   ctx.fillText(num, ((maxRadius / 4) * i) + maxRadius + 5, (canvas.height / 2) - 10 );
 }
 
