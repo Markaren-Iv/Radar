@@ -35,8 +35,8 @@ var data = snapshot.val();
 if (data) {
   
   currentDegree = -1* data.degree; // inversion for being alighn with real servo
-  currentDistance_sr = data.distance_sr < 40 ?  data.distance_sr : 40; // limiting to the radius of radar
-  currentDistance_an =  data.distance_an;
+  currentDistance_sr = data.distance_sr < maxDistance ?  data.distance_sr : maxDistance; // limiting to the radius of radar
+  currentDistance_an =  data.distance_an < maxDistance ?  data.distance_an : maxDistance;;
 
   Distances_an[currentDegree] =  currentDistance_an;
   Distances_sr[currentDegree] = currentDistance_sr;
@@ -56,7 +56,7 @@ var ctx = canvas.getContext('2d');
 var centerX = canvas.width / 2;
 var centerY = canvas.height / 2;
 var maxRadius = Math.min(centerX, centerY) - 20; // leave some margin
-var maxDistance = 40;
+var maxDistance = 35;
 // Function to draw the radar
 function drawRadar() {
 // Clear the canvas for redrawing
