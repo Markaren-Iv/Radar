@@ -18,6 +18,7 @@ var database = firebase.database();
 var currentDegree = 0;
 var currentDistance_sr = 0; 
 var currentDistance_an = 0;
+var state = true;
 
 // arrays for dots on graph
 var Distances_sr = [];
@@ -36,11 +37,10 @@ if (data) {
   
   currentDegree = -1* data.degree; // inversion for being alighn with real servo
   currentDistance_sr = data.distance_sr < maxDistance ?  data.distance_sr : maxDistance; // limiting to the radius of radar
-  currentDistance_an =  data.distance_an < maxDistance ?  data.distance_an : maxDistance;;
-
+  currentDistance_an =  data.distance_an < maxDistance ?  data.distance_an : maxDistance;
   Distances_an[currentDegree] =  currentDistance_an;
   Distances_sr[currentDegree] = currentDistance_sr;
-  
+  state = data.spin;
   //updates info on page
   p_distance_sr.textContent = "Distance: " + data.distance_sr + " cm";
   p_angle_sr.textContent = "Angle: " + data.degree + "°";
@@ -59,110 +59,110 @@ var maxRadius = Math.min(centerX, centerY) - 20; // leave some margin
 var maxDistance = 35;
 // Function to draw the radar
 function drawRadar() {
-// Clear the canvas for redrawing
-ctx.clearRect(0, 0, canvas.width, canvas.height);
+  // Clear the canvas for redrawing
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-// Draw concentric circles
-ctx.strokeStyle = "#C0C0C0";
-ctx.lineWidth = 1;
-for (var i = 1; i <= 4; i++) {
+  // Draw concentric circles
+  ctx.strokeStyle = "#C0C0C0";
+  ctx.lineWidth = 1;
+  for (var i = 1; i <= 4; i++) {
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, (maxRadius / 4) * i, 0, 2 * Math.PI);
+    ctx.stroke();
+    ctx.font = "10px Arial";       
+    ctx.fillStyle = "white";          
+    ctx.textAlign = "center";          
+    ctx.textBaseline = "middle";       
+
+    var num = String((maxDistance / 4) * i);
+    ctx.fillText(num, ((maxRadius / 4) * i) + maxRadius + 5, (canvas.height / 2) - 10 );
+  }
+
+  // Draw the cross lines (axes)
   ctx.beginPath();
-  ctx.arc(centerX, centerY, (maxRadius / 4) * i, 0, 2 * Math.PI);
+  ctx.moveTo(centerX - maxRadius, centerY);
+  ctx.lineTo(centerX + maxRadius, centerY);
+  ctx.moveTo(centerX, centerY - maxRadius);
+  ctx.lineTo(centerX, centerY + maxRadius);
   ctx.stroke();
-  ctx.font = "10px Arial";       
-  ctx.fillStyle = "white";          
-  ctx.textAlign = "center";          
-  ctx.textBaseline = "middle";       
 
-  var num = String((maxDistance / 4) * i);
-  ctx.fillText(num, ((maxRadius / 4) * i) + maxRadius + 5, (canvas.height / 2) - 10 );
-}
+  // Convert degree to radian 
+  var radian = currentDegree * Math.PI / 180;
 
-// Draw the cross lines (axes)
-ctx.beginPath();
-ctx.moveTo(centerX - maxRadius, centerY);
-ctx.lineTo(centerX + maxRadius, centerY);
-ctx.moveTo(centerX, centerY - maxRadius);
-ctx.lineTo(centerX, centerY + maxRadius);
-ctx.stroke();
+  // normalize currentDistance to the radar scale
+  var normalizedDistance_sr = (maxRadius / maxDistance)*currentDistance_sr;
+  var normalizedDistance_an = (maxRadius / maxDistance)*currentDistance_an;
 
-// Convert degree to radian 
-var radian = currentDegree * Math.PI / 180;
+  // ultrasound point
+  normalizedDistance_sr = Math.min(normalizedDistance_sr, maxRadius);
+  var pointX_sr = centerX + normalizedDistance_sr * Math.cos(radian);
+  var pointY_sr = centerY + normalizedDistance_sr * Math.sin(radian);
 
-// normalize currentDistance to the radar scale
-var normalizedDistance_sr = (maxRadius / maxDistance)*currentDistance_sr;
-var normalizedDistance_an = (maxRadius / maxDistance)*currentDistance_an;
-
-// ultrasound point
-normalizedDistance_sr = Math.min(normalizedDistance_sr, maxRadius);
-var pointX_sr = centerX + normalizedDistance_sr * Math.cos(radian);
-var pointY_sr = centerY + normalizedDistance_sr * Math.sin(radian);
-
-// analog point
-normalizedDistance_sr = Math.min(normalizedDistance_sr, maxRadius);
-var pointX_an = centerX + normalizedDistance_an * Math.cos(radian + Math.PI);
-var pointY_an = centerY + normalizedDistance_an * Math.sin(radian + Math.PI);
-//line of ultasonic
-ctx.strokeStyle = '#00FF00';
-ctx.lineWidth = 3;
-ctx.beginPath();
-ctx.moveTo(centerX, centerY);
-ctx.lineTo(pointX_sr, pointY_sr);
-ctx.stroke();
-//line of gp2y
-ctx.strokeStyle = '#0000FF';
-ctx.lineWidth = 3;
-ctx.beginPath();
-ctx.moveTo(centerX, centerY);
-ctx.lineTo(pointX_an, pointY_an);
-ctx.stroke();
- //the angles are negative because for drawing you have to reverse the angle
-if(currentDegree !== 0 && currentDegree !== -180)
-{
-for(var i = 0; i > -180; i--){
-  if (Distances_sr[i] != 0){
-    var radian_l = i * Math.PI / 180;
-    var normalizedDistance_sr_l = (maxRadius / maxDistance)*Distances_sr[i];
-    var pointX_sr_l = centerX + normalizedDistance_sr_l * Math.cos(radian_l);
-    var pointY_sr_l = centerY + normalizedDistance_sr_l * Math.sin(radian_l);
-    ctx.fillStyle = '#f00';
-    ctx.beginPath();
-    ctx.arc(pointX_sr_l, pointY_sr_l, 5, 0, 2 * Math.PI);
-    ctx.fill();
+  // analog point
+  normalizedDistance_sr = Math.min(normalizedDistance_sr, maxRadius);
+  var pointX_an = centerX + normalizedDistance_an * Math.cos(radian + Math.PI);
+  var pointY_an = centerY + normalizedDistance_an * Math.sin(radian + Math.PI);
+  //line of ultasonic
+  ctx.strokeStyle = '#00FF00';
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  ctx.moveTo(centerX, centerY);
+  ctx.lineTo(pointX_sr, pointY_sr);
+  ctx.stroke();
+  //line of gp2y
+  ctx.strokeStyle = '#0000FF';
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  ctx.moveTo(centerX, centerY);
+  ctx.lineTo(pointX_an, pointY_an);
+  ctx.stroke();
+  //the angles are negative because for drawing you have to reverse the angle
+  if(currentDegree !== 0 && currentDegree !== -180)
+  {
+  for(var i = 0; i > -180; i--){
+    if (Distances_sr[i] != 0){
+      var radian_l = i * Math.PI / 180;
+      var normalizedDistance_sr_l = (maxRadius / maxDistance)*Distances_sr[i];
+      var pointX_sr_l = centerX + normalizedDistance_sr_l * Math.cos(radian_l);
+      var pointY_sr_l = centerY + normalizedDistance_sr_l * Math.sin(radian_l);
+      ctx.fillStyle = '#f00';
+      ctx.beginPath();
+      ctx.arc(pointX_sr_l, pointY_sr_l, 5, 0, 2 * Math.PI);
+      ctx.fill();
+    }
+    
   }
-  
-}
 
-for(var i = 0; i > -180; i--){
-  if (Distances_an[i] != 0){
-    var radian_l = (i* Math.PI / 180) + Math.PI;
-    var normalizedDistance_an_l = (maxRadius / maxDistance)*Distances_an[i];
-    var pointX_an_l = centerX + normalizedDistance_an_l * Math.cos(radian_l);
-    var pointY_an_l = centerY + normalizedDistance_an_l * Math.sin(radian_l);
-    ctx.fillStyle = '#f50';
-    ctx.beginPath();
-    ctx.arc(pointX_an_l, pointY_an_l, 5, 0, 2 * Math.PI);
-    ctx.fill();
+  for(var i = 0; i > -180; i--){
+    if (Distances_an[i] != 0){
+      var radian_l = (i* Math.PI / 180) + Math.PI;
+      var normalizedDistance_an_l = (maxRadius / maxDistance)*Distances_an[i];
+      var pointX_an_l = centerX + normalizedDistance_an_l * Math.cos(radian_l);
+      var pointY_an_l = centerY + normalizedDistance_an_l * Math.sin(radian_l);
+      ctx.fillStyle = '#f50';
+      ctx.beginPath();
+      ctx.arc(pointX_an_l, pointY_an_l, 5, 0, 2 * Math.PI);
+      ctx.fill();
+    }
   }
-}
-}
-else{
-  //emptying arrays to erase the dots
-  Distances_sr = new Array(180).fill(0);
-  Distances_an = new Array(180).fill(0);
-}
+  }
+  else{
+    //emptying arrays to erase the dots
+    Distances_sr = new Array(180).fill(0);
+    Distances_an = new Array(180).fill(0);
+  }
 
-//draws a point sr
-ctx.fillStyle = '#f00';
-ctx.beginPath();
-ctx.arc(pointX_sr, pointY_sr, 5, 0, 2 * Math.PI);
-ctx.fill();
+  //draws a point sr
+  ctx.fillStyle = '#f00';
+  ctx.beginPath();
+  ctx.arc(pointX_sr, pointY_sr, 5, 0, 2 * Math.PI);
+  ctx.fill();
 
-//draws a point an
-ctx.fillStyle = '#f50';
-ctx.beginPath();
-ctx.arc(pointX_an, pointY_an, 5, 0, 2 * Math.PI);
-ctx.fill();
+  //draws a point an
+  ctx.fillStyle = '#f50';
+  ctx.beginPath();
+  ctx.arc(pointX_an, pointY_an, 5, 0, 2 * Math.PI);
+  ctx.fill();
 
 }
 
@@ -172,4 +172,28 @@ drawRadar();
 requestAnimationFrame(animate); // animates when possible
 }
 
+
 animate();
+
+function erasePoints(){
+  console.log("Er");
+
+  Distances_sr = new Array(180).fill(0);
+  Distances_an = new Array(180).fill(0);
+}
+
+function stateChange(){
+  console.log("st");
+
+  if(state){
+    firebase.database().ref('/radarData').update({ spin: false });
+    document.getElementById("stateButton").textContent = "Continue";
+  }
+  else{
+    firebase.database().ref('/radarData').update({ spin: true });
+    document.getElementById("stateButton").textContent = "Stop";
+  }
+}
+
+window.erasePoints = erasePoints;
+window.stateChange = stateChange;
