@@ -46,9 +46,18 @@ if (data) {
   p_angle_sr.textContent = "Angle: " + data.degree + "°";
   p_distance_an.textContent = "Distance: " +  data.distance_an + " cm";
   p_angle_an.textContent = "Angle: " + (data.degree + 180) + "°";
+  
 }
 });
-
+//at the beggining reads a value of spin and changes the text
+radarRef.once('value', function(snapshot) {
+    var data = snapshot.val();
+    if (data && data.spin !== undefined) {
+      state = data.spin;
+      // Optionally update the button text based on state
+      document.getElementById("stateButton").textContent = state ? "Stop" : "Continue";
+    }
+  })
 
 // Setup the canvas and drawing context
 var canvas = document.getElementById('radarCanvas');
@@ -176,15 +185,11 @@ requestAnimationFrame(animate); // animates when possible
 animate();
 
 function erasePoints(){
-  console.log("Er");
-
   Distances_sr = new Array(180).fill(0);
   Distances_an = new Array(180).fill(0);
 }
 
 function stateChange(){
-  console.log("st");
-
   if(state){
     firebase.database().ref('/radarData').update({ spin: false });
     document.getElementById("stateButton").textContent = "Continue";
@@ -194,6 +199,3 @@ function stateChange(){
     document.getElementById("stateButton").textContent = "Stop";
   }
 }
-
-window.erasePoints = erasePoints;
-window.stateChange = stateChange;
